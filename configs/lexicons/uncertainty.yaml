@@ -1,0 +1,89 @@
+# Uncertainty language lexicon
+# Source: Adapted from Loughran-McDonald (2011) and Jiang et al. (2019)
+# Used in: src/features/text_uncertainty.py
+# Format: one term per line, lowercase, matched case-insensitively
+
+terms:
+  # Modal uncertainty
+  - may
+  - might
+  - could
+  - would
+  - should
+  - can
+  - cannot
+
+  # Epistemic uncertainty
+  - possibly
+  - probably
+  - likely
+  - unlikely
+  - perhaps
+  - apparently
+  - presumably
+  - seemingly
+
+  # Explicit uncertainty
+  - uncertain
+  - uncertainty
+  - unclear
+  - unknown
+  - unsure
+  - unpredictable
+  - unpredictability
+  - indefinite
+  - indeterminate
+
+  # Approximation
+  - approximately
+  - roughly
+  - around
+  - about
+  - nearly
+  - almost
+  - essentially
+  - generally
+  - broadly
+
+  # Conditional
+  - if
+  - assuming
+  - provided that
+  - contingent
+  - subject to
+  - depending on
+  - depending upon
+  - in the event
+
+  # Caveat language
+  - however
+  - although
+  - though
+  - but
+  - yet
+  - nevertheless
+  - notwithstanding
+  - despite
+  - except
+  - unless
+  - until
+  - pending
+
+  # Forward-risk qualifiers
+  - risk
+  - risks
+  - risk factor
+  - risk factors
+  - uncertain outlook
+  - challenging
+  - difficult
+  - headwind
+  - headwinds
+  - volatile
+  - volatility
+  - fluctuation
+  - fluctuations
+  - disruption
+  - disruptions
+  - macro uncertainty
+  - macroeconomic uncertainty

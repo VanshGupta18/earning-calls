@@ -1,0 +1,82 @@
+# Forward-looking language lexicon
+# Source: Adapted from SEC safe harbor rules and earnings call NLP literature
+# Used in: src/features/text_specificity.py
+# Format: one phrase per line, lowercase, matched case-insensitively
+
+phrases:
+  # Temporal forward markers
+  - going forward
+  - looking ahead
+  - looking forward
+  - in the future
+  - in the coming
+  - in the next
+  - over the next
+  - in the quarters ahead
+  - in the year ahead
+  - next quarter
+  - next year
+  - next fiscal year
+  - next fiscal quarter
+  - for the remainder of
+
+  # Guidance language
+  - we expect
+  - we anticipate
+  - we project
+  - we forecast
+  - we guide
+  - we are guiding
+  - our guidance
+  - our outlook
+  - we are raising guidance
+  - we are maintaining guidance
+  - we are lowering guidance
+  - full year guidance
+  - fiscal year guidance
+  - updated guidance
+
+  # Growth / expansion intent
+  - we plan to
+  - we intend to
+  - we aim to
+  - we target
+  - we are targeting
+  - we will continue
+  - we will focus
+  - we will invest
+  - we will expand
+  - we will grow
+  - we are committed to
+  - our strategy is
+
+  # Pipeline and product roadmap
+  - in development
+  - under development
+  - pipeline
+  - roadmap
+  - upcoming launch
+  - planned launch
+  - will launch
+  - will release
+  - will introduce
+  - set to launch
+  - expected to launch
+
+  # Financial projections
+  - will generate
+  - will achieve
+  - will deliver
+  - will report
+  - will exceed
+  - on track to
+  - positioned to
+  - poised to
+  - confident in our ability
+
+  # Safe harbor boilerplate (flag but don't count as signal)
+  - forward-looking statements
+  - forward looking statements
+  - safe harbor
+  - actual results may differ
+  - cautionary statement

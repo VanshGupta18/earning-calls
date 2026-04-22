@@ -1,0 +1,84 @@
+# Hedging language lexicon
+# Source: Adapted from Hyland (1998), Fraser (2010), and earnings call NLP literature
+# Used in: src/features/text_uncertainty.py
+# Format: one phrase per line, lowercase, matched case-insensitively
+
+phrases:
+  # Epistemic stance
+  - we believe
+  - we think
+  - we feel
+  - we expect
+  - we anticipate
+  - we estimate
+  - we project
+  - we forecast
+  - we assume
+  - we consider
+  - management believes
+  - management expects
+  - management anticipates
+  - the company believes
+  - the company expects
+
+  # Approximation hedges
+  - to some extent
+  - to a certain degree
+  - to a certain extent
+  - in some ways
+  - in many respects
+  - for the most part
+  - by and large
+  - more or less
+  - in large part
+  - in part
+
+  # Possibility hedges
+  - it is possible
+  - it is likely
+  - it is unlikely
+  - it may be
+  - it might be
+  - there is a possibility
+  - there is a chance
+  - it appears
+  - it seems
+  - it would appear
+  - it would seem
+
+  # Qualification hedges
+  - in our view
+  - in our opinion
+  - from our perspective
+  - as we see it
+  - based on our assessment
+  - based on current information
+  - at this time
+  - at this point
+  - at this juncture
+  - as of now
+  - as of today
+  - currently
+
+  # Softening language
+  - somewhat
+  - relatively
+  - fairly
+  - moderately
+  - reasonably
+  - rather
+  - quite
+  - a bit
+  - slightly
+
+  # Conditional hedges
+  - assuming no
+  - assuming continued
+  - absent any
+  - all else being equal
+  - all else equal
+  - ceteris paribus
+  - barring unforeseen
+  - absent unforeseen
+  - subject to market conditions
+  - subject to regulatory

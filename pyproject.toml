@@ -1,9 +1,35 @@
 [project]
 name = "earning-calls"
 version = "0.1.0"
-description = "Add your description here"
+description = "Multimodal Earnings Call Intelligence System"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.11,<3.12"
 dependencies = [
-    "langchain>=1.2.15",
+    "datasets>=3.0.0",
+    "duckdb==1.2.2",
+    "librosa==0.10.2.post1",
+    "lightgbm==4.6.0",
+    "matplotlib==3.10.1",
+    "nltk==3.9.1",
+    "numpy==1.26.4",
+    "opensmile==2.5.0",
+    "pandas==2.2.3",
+    "polars==1.27.0",
+    "pyannote-audio==3.3.2",
+    "pytest==8.3.5",
+    "python-dotenv>=1.2.2",
+    "pyyaml==6.0.2",
+    "scikit-learn==1.6.1",
+    "scipy==1.15.2",
+    "seaborn==0.13.2",
+    "soundfile==0.13.1",
+    "spacy==3.8.4",
+    "torch==2.5.1",
+    "torchaudio==2.5.1",
+    "tqdm==4.67.1",
+    "transformers==4.51.3",
+    "whisperx==3.3.1",
+    "xgboost==3.0.1",
+    "yfinance>=0.2.36",
+    "yt-dlp==2025.3.31",
 ]

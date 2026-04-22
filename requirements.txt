@@ -1,1 +1,42 @@
-langchain
+# NLP Models & Processing
+transformers==4.51.3
+torch==2.5.1
+spacy==3.8.4
+nltk==3.9.1
+
+# Gradient Boosted Models & Machine Learning
+lightgbm==4.6.0
+xgboost==3.0.1
+scikit-learn==1.6.1
+
+# Data Engineering & Storage
+polars==1.27.0
+pandas==2.2.3
+duckdb==1.2.2
+
+# Visualization
+matplotlib==3.10.1
+seaborn==0.13.2
+
+# Transcription, Alignment & Diarization
+whisperx==3.3.1
+pyannote.audio==3.3.2
+
+# Audio Processing & Feature Extraction
+torchaudio==2.5.1
+librosa==0.10.2.post1
+soundfile==0.13.1
+opensmile==2.5.0
+
+# Dataset Download
+yt-dlp==2025.3.31
+datasets>=3.0.0
+yfinance>=0.2.36
+requests
+
+# Core & Utilities
+numpy==1.26.4
+scipy==1.15.2
+tqdm==4.67.1
+pyyaml==6.0.2
+python-dotenv

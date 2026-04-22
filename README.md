@@ -12,11 +12,11 @@ A structured multimodal pipeline that analyzes earnings call audio, transcripts,
 ## Current Status
 
 > [!NOTE]
-> **Professional Status:** The project is currently in the planning and data-foundation stage, with architecture, methodology, and tooling defined, and implementation of the ingestion and preprocessing pipeline as the next milestone.
+> **Project Status:** Planning and architecture complete. Dataset strategy finalized. Beginning Phase 1 execution (data download, environment validation, and pipeline scaffolding).
 
-- **Completed:** Problem statement defined, research direction finalized, system architecture drafted, README and project roadmap prepared, tech stack reviewed.
-- **In Progress:** Dataset sourcing, environment setup, repository structuring, and preprocessing module planning.
-- **Not Started:** Large-scale call collection, transcript alignment, feature extraction, model training, and dashboard implementation.
+- **Completed:** Problem statement, research direction, system architecture, full implementation plan (63 tasks across 5 phases), data contracts (4 Parquet schemas), repository structure, requirements files, team responsibilities, evaluation plan, leakage controls, fallback plan, and dataset sourcing strategy.
+- **In Progress:** Real dataset download and preprocessing scripts, environment validation, Phase 1 task execution.
+- **Not Started:** Feature extraction pipelines, model training, evaluation, inference, and dashboard.
 
 
 Earnings calls are not just disclosure events. They are interactive signaling systems where managers reveal information through:
@@ -109,7 +109,37 @@ Markets may not fully price:
 
 The strongest signals are expected to appear when a manager’s narrative breaks down under questioning.
 
-## System Architecture
+## 🚀 Getting Started (For Team Members)
+
+If you are pulling this repository on a **new device** (e.g., Aadi taking over), follow these exact steps to rebuild the environment and datasets, as large data files and the database are explicitly ignored by `.gitignore`.
+
+### 1. Bootstrap the Environment
+We provide a setup script that installs system dependencies (FFmpeg), creates a Python virtual environment, installs packages, and initializes the DuckDB schema.
+```bash
+./setup.sh
+source .venv/bin/activate
+```
+
+### 2. Re-hydrate the Data
+Since `.parquet` files are not stored in Git, you must download the source data locally to re-create the `data/processed/` folder state.
+
+```bash
+# 1. Download Transcripts (S&P 500)
+python scripts/download_transcripts.py
+
+# 2. Download Market Data (Requires API/YFinance)
+python scripts/download_market_data.py
+
+# 3. Download Audio Dataset (Earnings-22)
+python scripts/download_earnings22.py
+```
+
+### 3. Run the Feature Extraction Pipelines
+Once the data is downloaded, you can run the extraction scripts located in `src/features/` to regenerate the sentiment, acoustic, and linguistic features.
+
+---
+
+## 🏗 System Architecture
 
 ```text
 Raw Audio + Transcript
@@ -131,18 +161,56 @@ Return / Volatility / Risk Signal
 
 ## Data Requirements
 
+### Dataset Strategy
+
+This project uses **real, public datasets only** — no mock or synthetic data.
+
+#### Tier 1 — Primary MVP Dataset
+
+**[`Bose345/sp500_earnings_transcripts`](https://huggingface.co/datasets/Bose345/sp500_earnings_transcripts)** (HuggingFace)
+
+- 33,362 transcripts across 685 S&P 500 and large-cap companies (2005–2025).
+- Includes `structured_content` with per-speaker turns (`{speaker, text}`), enabling direct segmentation into prepared remarks, analyst questions, and management answers.
+- MIT licensed. 1.82 GB total.
+- **MVP scope:** All S&P 500 sectors, 2023–2024 (~4,100 transcripts).
+
+#### Tier 2 — Validation Benchmark
+
+**[`jlh-ibm/earnings_call`](https://huggingface.co/datasets/jlh-ibm/earnings_call)** (HuggingFace)
+
+- 188 transcripts from 10 NASDAQ companies (2016–2020).
+- Bundled with 11,970 stock prices and 1,196 sector index values.
+- Published benchmark ([Roozen & Lelli, 2021](https://doi.org/10.34894/TJE0D0)) for comparison.
+- Used for rapid pipeline testing and cross-validation.
+
+#### Tier 3 — Supplementary Cross-Check
+
+**[`ashwinm500/earnings-call-transcripts`](https://www.kaggle.com/datasets/ashwinm500/earnings-call-transcripts)** (Kaggle)
+
+- 10 NASDAQ companies (2016–2020). Apache 2.0.
+- Different format from Tier 1 — tests ingestion pipeline robustness.
+- Cross-validates features against Tier 2 on overlapping companies/periods.
+
+#### Market Data
+
+**[`yfinance`](https://pypi.org/project/yfinance/)** (Python package)
+
+- Free historical OHLCV prices, earnings dates, dividends, and splits for all U.S.-listed equities.
+- Used to compute: next-day return, 1–5 day return, realized volatility, and earnings surprise.
+- Data is cached to Parquet immediately after download to avoid re-fetching.
+
 ### Inputs
 
-- Earnings call audio files.
-- Transcript text, preferably timestamped.
-- Speaker metadata such as CEO, CFO, analyst, operator.
-- Market data such as prices, returns, volume, volatility, and fundamentals.
+- Earnings call transcripts with speaker-level segmentation.
+- Market data: prices, returns, volume, volatility, and fundamentals.
+- Audio files (deferred to multimodal phase — not required for text-first MVP).
 
 ### Recommended storage layout
 
-- Raw data: local disk or free-tier object storage if available.
-- Processed segments: Parquet files.
-- Feature tables: DuckDB locally, optional SQL database later.
+- Raw transcripts: `data/raw/` (Parquet from HuggingFace download).
+- Processed segments: `data/processed/segments.parquet`.
+- Feature tables: `data/processed/` (Parquet) + DuckDB for analytics.
+- Market data: `data/processed/market_data.parquet`.
 
 This project is designed to work without paid infrastructure in the MVP stage.
 
