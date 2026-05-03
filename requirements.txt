@@ -40,3 +40,11 @@ scipy==1.15.2
 tqdm==4.67.1
 pyyaml==6.0.2
 python-dotenv
+joblib
+
+# Dashboard & UI
+streamlit==1.42.0
+plotly==6.0.0
+
+# Testing
+pytest==8.3.5
