@@ -1,8 +1,8 @@
 {
     "model": "Baseline (Price-Only)",
-    "train_samples": 19,
-    "test_samples": 31,
-    "rmse": 0.0056336815439194995,
+    "train_samples": 8,
+    "test_samples": 2,
+    "rmse": 0.026291485639594835,
     "ic": 0.0,
     "features": [
         "price_relative"

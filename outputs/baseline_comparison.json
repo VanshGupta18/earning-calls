@@ -1,0 +1,396 @@
+[
+  {
+    "model": "Text-Only",
+    "task": "volatility_regression",
+    "target": "realized_vol_5d",
+    "train_samples": 7,
+    "test_samples": 3,
+    "n_features": 35,
+    "rmse": 0.013967999762464335,
+    "ic": -0.5,
+    "mae": 0.013562050142523189,
+    "top_features": [
+      {
+        "feature": "sentiment_score_min",
+        "importance": 55
+      },
+      {
+        "feature": "sentiment_score_mean",
+        "importance": 51
+      },
+      {
+        "feature": "sentiment_score_std",
+        "importance": 43
+      },
+      {
+        "feature": "specificity_score_mean",
+        "importance": 42
+      },
+      {
+        "feature": "hedging_frequency_mean",
+        "importance": 38
+      },
+      {
+        "feature": "sentiment_score_max",
+        "importance": 35
+      },
+      {
+        "feature": "linguistic_complexity_mean",
+        "importance": 24
+      },
+      {
+        "feature": "uncertainty_score_mean",
+        "importance": 23
+      },
+      {
+        "feature": "turn_taking_frequency",
+        "importance": 19
+      },
+      {
+        "feature": "specificity_score_std",
+        "importance": 16
+      },
+      {
+        "feature": "hedging_frequency_std",
+        "importance": 12
+      },
+      {
+        "feature": "forward_looking_score_max",
+        "importance": 11
+      },
+      {
+        "feature": "forward_looking_score_mean",
+        "importance": 8
+      },
+      {
+        "feature": "n_total_segments",
+        "importance": 7
+      },
+      {
+        "feature": "uncertainty_score_std",
+        "importance": 6
+      },
+      {
+        "feature": "forward_looking_score_std",
+        "importance": 5
+      },
+      {
+        "feature": "n_management_answers",
+        "importance": 2
+      },
+      {
+        "feature": "uncertainty_score_max",
+        "importance": 2
+      },
+      {
+        "feature": "hedging_frequency_max",
+        "importance": 1
+      }
+    ]
+  },
+  {
+    "model": "Text-Only",
+    "task": "direction_classification",
+    "target": "return_1d_direction",
+    "train_samples": 7,
+    "test_samples": 3,
+    "n_features": 35,
+    "accuracy": 0.3333333333333333,
+    "f1": 0.5,
+    "auc": 0.0,
+    "top_features": [
+      {
+        "feature": "hedging_frequency_mean",
+        "importance": 93
+      },
+      {
+        "feature": "specificity_score_mean",
+        "importance": 90
+      },
+      {
+        "feature": "sentiment_score_max",
+        "importance": 47
+      },
+      {
+        "feature": "sentiment_score_std",
+        "importance": 36
+      },
+      {
+        "feature": "linguistic_complexity_mean",
+        "importance": 34
+      },
+      {
+        "feature": "uncertainty_score_std",
+        "importance": 28
+      },
+      {
+        "feature": "specificity_score_std",
+        "importance": 20
+      },
+      {
+        "feature": "sentiment_score_min",
+        "importance": 19
+      },
+      {
+        "feature": "forward_looking_score_max",
+        "importance": 9
+      },
+      {
+        "feature": "uncertainty_score_max",
+        "importance": 4
+      },
+      {
+        "feature": "sentiment_score_mean",
+        "importance": 4
+      },
+      {
+        "feature": "qa_duration_ratio",
+        "importance": 4
+      },
+      {
+        "feature": "hedging_frequency_max",
+        "importance": 3
+      },
+      {
+        "feature": "forward_looking_score_std",
+        "importance": 2
+      },
+      {
+        "feature": "avg_answer_length",
+        "importance": 2
+      },
+      {
+        "feature": "uncertainty_score_mean",
+        "importance": 2
+      },
+      {
+        "feature": "n_operator_transitions",
+        "importance": 1
+      },
+      {
+        "feature": "n_management_answers",
+        "importance": 1
+      }
+    ]
+  },
+  {
+    "model": "Price-Only",
+    "task": "volatility_regression",
+    "target": "realized_vol_5d",
+    "train_samples": 7,
+    "test_samples": 3,
+    "n_features": 1,
+    "rmse": 0.004382785793774599,
+    "ic": 0.0,
+    "mae": 0.0038280949406778435,
+    "top_features": [
+      {
+        "feature": "price_norm",
+        "importance": 200
+      }
+    ]
+  },
+  {
+    "model": "Price-Only",
+    "task": "direction_classification",
+    "target": "return_1d_direction",
+    "train_samples": 7,
+    "test_samples": 3,
+    "n_features": 1,
+    "accuracy": 0.3333333333333333,
+    "f1": 0.5,
+    "auc": 0.75,
+    "top_features": [
+      {
+        "feature": "price_norm",
+        "importance": 39
+      }
+    ]
+  },
+  {
+    "model": "Text+Structural+Price",
+    "task": "volatility_regression",
+    "target": "realized_vol_5d",
+    "train_samples": 7,
+    "test_samples": 3,
+    "n_features": 36,
+    "rmse": 0.015007998907745903,
+    "ic": -0.5,
+    "mae": 0.0145241242039617,
+    "top_features": [
+      {
+        "feature": "sentiment_score_mean",
+        "importance": 56
+      },
+      {
+        "feature": "sentiment_score_min",
+        "importance": 56
+      },
+      {
+        "feature": "sentiment_score_std",
+        "importance": 45
+      },
+      {
+        "feature": "hedging_frequency_mean",
+        "importance": 44
+      },
+      {
+        "feature": "specificity_score_mean",
+        "importance": 37
+      },
+      {
+        "feature": "sentiment_score_max",
+        "importance": 33
+      },
+      {
+        "feature": "uncertainty_score_mean",
+        "importance": 24
+      },
+      {
+        "feature": "linguistic_complexity_mean",
+        "importance": 23
+      },
+      {
+        "feature": "turn_taking_frequency",
+        "importance": 18
+      },
+      {
+        "feature": "specificity_score_std",
+        "importance": 15
+      },
+      {
+        "feature": "hedging_frequency_std",
+        "importance": 11
+      },
+      {
+        "feature": "forward_looking_score_mean",
+        "importance": 9
+      },
+      {
+        "feature": "price_norm",
+        "importance": 7
+      },
+      {
+        "feature": "forward_looking_score_max",
+        "importance": 6
+      },
+      {
+        "feature": "n_total_segments",
+        "importance": 3
+      },
+      {
+        "feature": "uncertainty_score_std",
+        "importance": 3
+      },
+      {
+        "feature": "hedging_frequency_max",
+        "importance": 3
+      },
+      {
+        "feature": "forward_looking_score_std",
+        "importance": 2
+      },
+      {
+        "feature": "qa_duration_ratio",
+        "importance": 2
+      },
+      {
+        "feature": "linguistic_complexity_max",
+        "importance": 1
+      }
+    ]
+  },
+  {
+    "model": "Text+Structural+Price",
+    "task": "direction_classification",
+    "target": "return_1d_direction",
+    "train_samples": 7,
+    "test_samples": 3,
+    "n_features": 36,
+    "accuracy": 0.3333333333333333,
+    "f1": 0.5,
+    "auc": 0.5,
+    "top_features": [
+      {
+        "feature": "hedging_frequency_mean",
+        "importance": 95
+      },
+      {
+        "feature": "specificity_score_mean",
+        "importance": 85
+      },
+      {
+        "feature": "sentiment_score_max",
+        "importance": 49
+      },
+      {
+        "feature": "linguistic_complexity_mean",
+        "importance": 41
+      },
+      {
+        "feature": "sentiment_score_std",
+        "importance": 39
+      },
+      {
+        "feature": "uncertainty_score_std",
+        "importance": 25
+      },
+      {
+        "feature": "specificity_score_std",
+        "importance": 17
+      },
+      {
+        "feature": "sentiment_score_min",
+        "importance": 9
+      },
+      {
+        "feature": "sentiment_score_mean",
+        "importance": 7
+      },
+      {
+        "feature": "forward_looking_score_max",
+        "importance": 5
+      },
+      {
+        "feature": "uncertainty_score_max",
+        "importance": 5
+      },
+      {
+        "feature": "qa_duration_ratio",
+        "importance": 4
+      },
+      {
+        "feature": "n_operator_transitions",
+        "importance": 3
+      },
+      {
+        "feature": "turn_taking_frequency",
+        "importance": 3
+      },
+      {
+        "feature": "price_norm",
+        "importance": 2
+      },
+      {
+        "feature": "avg_answer_length",
+        "importance": 2
+      },
+      {
+        "feature": "hedging_frequency_max",
+        "importance": 2
+      },
+      {
+        "feature": "forward_looking_score_mean",
+        "importance": 2
+      },
+      {
+        "feature": "uncertainty_score_mean",
+        "importance": 2
+      },
+      {
+        "feature": "forward_looking_score_std",
+        "importance": 1
+      }
+    ]
+  }
+]

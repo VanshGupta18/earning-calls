@@ -35,7 +35,7 @@ logger = logging.getLogger(__name__)
 
 
 class Wav2Vec2Extractor:
-    def __init__(self, config_path: Path):
+    def __init__(self, config_path: Path | None = None):
         self.model_name = "facebook/wav2vec2-base"
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         
@@ -70,8 +70,21 @@ class Wav2Vec2Extractor:
             ).to(self.device)
 
             # Inference
-            with torch.no_grad():
-                outputs = self.model(**inputs)
+            try:
+                with torch.no_grad():
+                    outputs = self.model(**inputs)
+            except Exception as e:
+                # Automatic fallback to CPU if MPS fails (common for long segments on Apple Silicon)
+                if "MPS" in str(e) or "channels > 65536" in str(e):
+                    logger.info("MPS limit reached for %s, falling back to CPU for this segment", Path(audio_path).name)
+                    inputs_cpu = {k: v.to("cpu") for k, v in inputs.items()}
+                    self.model.to("cpu")
+                    with torch.no_grad():
+                        outputs = self.model(**inputs_cpu)
+                    # Move model back to original device for next segment
+                    self.model.to(self.device)
+                else:
+                    raise e
             
             # Mean pooling across time (dimension 1)
             # last_hidden_state shape: (batch_size, sequence_length, hidden_size)
@@ -82,31 +95,86 @@ class Wav2Vec2Extractor:
             logger.warning("wav2vec2 failed for %s: %s", audio_path, e)
             return None
 
-    def extract(self, segments: pl.DataFrame) -> pl.DataFrame:
-        """Run extraction on a Polars DataFrame of segments."""
-        logger.info("Extracting wav2vec2 embeddings from %d segments...", len(segments))
-        
+    def extract(self, df_segments: pl.DataFrame, output_path: Path) -> pl.DataFrame:
+        """Extract embeddings for all segments with checkpointing and memory cleanup."""
+        logger.info("Extracting wav2vec2 embeddings from %d segments...", len(df_segments))
+
+        # Check for existing progress
+        existing_ids = set()
+        if output_path.exists():
+            try:
+                df_existing = pl.read_parquet(output_path)
+                existing_ids = set(df_existing["segment_id"].to_list())
+                logger.info("Found existing progress: %d segments already processed", len(existing_ids))
+            except Exception as e:
+                logger.warning("Could not read existing output file, starting fresh: %s", e)
+
+        # Filter to only unprocessed segments
+        df_todo = df_segments.filter(~pl.col("segment_id").is_in(list(existing_ids)))
+
+        if len(df_todo) == 0:
+            logger.info("All segments already processed.")
+            return pl.read_parquet(output_path)
+
+        logger.info("Processing %d remaining segments...", len(df_todo))
         results = []
-        segment_ids = []
-        
-        for row in tqdm(segments.iter_rows(named=True), desc="wav2vec2"):
-            emb = self.extract_embedding(row["audio_path"])
-            if emb:
-                results.append(emb)
-                segment_ids.append(row["segment_id"])
 
-        if not results:
-            return pl.DataFrame({"segment_id": []})
+        import gc
+        try:
+            for i, row in enumerate(tqdm(df_todo.iter_rows(named=True), total=len(df_todo), desc="wav2vec2")):
+                emb = self.extract_embedding(row["audio_path"])
+                if emb is not None:
+                    # Store as segment_id + individual embedding dimensions
+                    record = {"segment_id": row["segment_id"]}
+                    for j, val in enumerate(emb):
+                        record[f"wav2vec2_{j}"] = val
+                    results.append(record)
+                    del emb # Explicitly delete embedding tensor/list
 
-        # Convert list of embeddings to columns (emb_0, emb_1, ...)
-        # Contract C says 'vocal_embeddings' (JSON or multi-col)
-        # We'll use 768 float columns to match typical Parquet patterns
-        n_dim = len(results[0])
-        col_names = [f"wav2vec2_{i}" for i in range(n_dim)]
-        
-        df_embs = pl.DataFrame(results, schema=col_names)
-        
-        return pl.DataFrame({"segment_id": segment_ids}).with_columns(df_embs)
+                # Heavy memory cleanup every segment
+                if self.device == "mps":
+                    torch.mps.empty_cache()
+                gc.collect() # Force Python to clear RAM
+                
+                # Checkpoint every 50 segments (Save more often to clear results list)
+                if (i + 1) % 50 == 0 and len(results) > 0:
+                    self._save_checkpoint(results, output_path, existing_ids)
+                    logger.info("Checkpoint at %d/%d", i + 1, len(df_todo))
+                    results = []
+                    # Refresh existing_ids
+                    if output_path.exists():
+                        df_check = pl.read_parquet(output_path)
+                        existing_ids = set(df_check["segment_id"].to_list())
+
+            # Final save
+            if len(results) > 0:
+                self._save_checkpoint(results, output_path, existing_ids)
+
+            df_final = pl.read_parquet(output_path)
+            logger.info("Extraction complete: %d total segments saved.", len(df_final))
+            return df_final
+
+        except KeyboardInterrupt:
+            logger.info("Interrupted! Saving progress...")
+            if len(results) > 0:
+                self._save_checkpoint(results, output_path, existing_ids)
+            raise
+
+    def _save_checkpoint(self, results: list[dict], output_path: Path, existing_ids: set):
+        """Save intermediate results, merging with any existing file."""
+        df_new = pl.DataFrame(results)
+
+        if output_path.exists():
+            df_old = pl.read_parquet(output_path)
+            # Remove duplicates
+            new_only = df_new.filter(~pl.col("segment_id").is_in(list(existing_ids)))
+            df_final = pl.concat([df_old, new_only], how="vertical")
+        else:
+            df_final = df_new
+
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        df_final.write_parquet(output_path)
+        logger.info("Saved checkpoint: %d total segments in %s", len(df_final), output_path.name)
 
 
 # ---------------------------------------------------------------------------
@@ -116,7 +184,6 @@ class Wav2Vec2Extractor:
 
 def main():
     project_root = Path(__file__).resolve().parent.parent.parent
-    # config_path = project_root / "configs" / "audio_config.yaml"
     segments_path = project_root / "data" / "processed" / "earnings22_segments.parquet"
     output_path = project_root / "data" / "processed" / "audio_wav2vec2.parquet"
 
@@ -124,17 +191,9 @@ def main():
         logger.error("Segments file not found.")
         return
 
+    extractor = Wav2Vec2Extractor()
     df_segments = pl.read_parquet(segments_path)
-    
-    # Subset for testing
-    # df_segments = df_segments.head(20)
-
-    extractor = Wav2Vec2Extractor(None) # Passing None for config now
-    df_features = extractor.extract(df_segments)
-
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    df_features.write_parquet(output_path)
-    logger.info("Saved wav2vec2 embeddings (%d rows) to: %s", len(df_features), output_path)
+    extractor.extract(df_segments, output_path)
 
 
 if __name__ == "__main__":

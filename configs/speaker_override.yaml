@@ -1,0 +1,19 @@
+# Speaker override configuration
+# Use this file to manually correct speaker role assignments
+# for specific calls where the heuristic classification fails.
+#
+# Format:
+#   overrides:
+#     <call_id>:
+#       <speaker_name>: <role>
+#
+# Valid roles: ceo, cfo, executive, analyst, operator, other
+#
+# Example:
+#   overrides:
+#     AAPL_2024Q1:
+#       "Tim Cook": ceo
+#       "Luca Maestri": cfo
+#       "Amit Daryanani - Evercore ISI": analyst
+
+overrides: {}

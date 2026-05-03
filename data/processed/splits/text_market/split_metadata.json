@@ -1,0 +1,85 @@
+{
+  "dataset_name": "text_market",
+  "split_method": "chronological",
+  "date_column": "call_date",
+  "total_samples": 10,
+  "train": {
+    "n_samples": 6,
+    "n_features": 47,
+    "date_range": [
+      "2020-05-29",
+      "2021-08-31"
+    ]
+  },
+  "val": {
+    "n_samples": 2,
+    "n_features": 47,
+    "date_range": [
+      "2021-11-30",
+      "2022-02-28"
+    ]
+  },
+  "test": {
+    "n_samples": 2,
+    "n_features": 47,
+    "date_range": [
+      "2022-11-30",
+      "2023-02-28"
+    ]
+  },
+  "features": [
+    "call_id",
+    "sentiment_score_mean",
+    "sentiment_score_std",
+    "sentiment_score_min",
+    "sentiment_score_max",
+    "uncertainty_score_mean",
+    "uncertainty_score_std",
+    "uncertainty_score_min",
+    "uncertainty_score_max",
+    "forward_looking_score_mean",
+    "forward_looking_score_std",
+    "forward_looking_score_min",
+    "forward_looking_score_max",
+    "hedging_frequency_mean",
+    "hedging_frequency_std",
+    "hedging_frequency_min",
+    "hedging_frequency_max",
+    "specificity_score_mean",
+    "specificity_score_std",
+    "specificity_score_min",
+    "specificity_score_max",
+    "linguistic_complexity_mean",
+    "linguistic_complexity_std",
+    "linguistic_complexity_min",
+    "linguistic_complexity_max",
+    "n_segments",
+    "qa_duration_ratio",
+    "avg_answer_length",
+    "avg_question_length",
+    "response_latency",
+    "turn_taking_frequency",
+    "speaker_diversity",
+    "n_total_segments",
+    "n_prepared_remarks",
+    "n_analyst_questions",
+    "n_management_answers",
+    "n_operator_transitions",
+    "ticker",
+    "call_date",
+    "close_t0",
+    "close_t1",
+    "close_t5",
+    "return_1d",
+    "return_5d",
+    "realized_vol_1d",
+    "realized_vol_5d",
+    "earnings_surprise"
+  ],
+  "target_columns": [
+    "return_1d",
+    "return_5d",
+    "realized_vol_1d",
+    "realized_vol_5d"
+  ]
+}

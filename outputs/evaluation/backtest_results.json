@@ -1,0 +1,38 @@
+{
+    "n_trades": 4,
+    "total_strategy_return": 0.05197253735480345,
+    "total_benchmark_return": -0.05177319536645908,
+    "annualized_sharpe": 9.654235507227583,
+    "max_drawdown": 0.0,
+    "win_rate": 0.5,
+    "trades": [
+        {
+            "date": "2022-02-03",
+            "ticker": "GLOP",
+            "actual_ret": 0.009284634260921505,
+            "signal": -1,
+            "pnl": -0.009284634260921505
+        },
+        {
+            "date": "2022-02-03",
+            "ticker": "TLTZF",
+            "actual_ret": 0.0,
+            "signal": 0,
+            "pnl": 0.0
+        },
+        {
+            "date": "2022-02-03",
+            "ticker": "IFNNY",
+            "actual_ret": -0.014220433073095609,
+            "signal": -1,
+            "pnl": 0.014220433073095609
+        },
+        {
+            "date": "2022-02-09",
+            "ticker": "TMVWY",
+            "actual_ret": -0.046943265539165405,
+            "signal": -1,
+            "pnl": 0.046943265539165405
+        }
+    ]
+}

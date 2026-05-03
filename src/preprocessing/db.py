@@ -51,7 +51,7 @@ def init_database(db_path: Union[str, Path]) -> duckdb.DuckDBPyConnection:
         )
 
     sql = _SQL_INIT.read_text()
-    conn.executescript(sql)
+    conn.execute(sql)
     logger.info("Database initialized at: %s", db_path)
     return conn
 

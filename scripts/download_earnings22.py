@@ -105,4 +105,4 @@ def download_earnings22(output_dir: Path, max_calls: int = 5):
 
 if __name__ == "__main__":
     project_root = Path(__file__).resolve().parent.parent
-    download_earnings22(project_root / "data", max_calls=10)
+    download_earnings22(project_root / "data", max_calls=50)
